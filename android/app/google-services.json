@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "389223430146",
+    "project_id": "neamah-7e68e",
+    "storage_bucket": "neamah-7e68e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389223430146:android:09003dd28ae015d98c8f1b",
+        "android_client_info": {
+          "package_name": "com.neamahapp.neamah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389223430146-defg501d02cb78v3suc4a3hd06au8uir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfngxuA0SqwfbH8OV22nDYXyTkIsVZ7z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389223430146-defg501d02cb78v3suc4a3hd06au8uir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
