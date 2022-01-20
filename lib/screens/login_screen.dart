@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:neamah/components/GoogleMap.dart';
-import 'package:neamah/components/setLocationButton.dart';
-import 'package:alert_dialog/alert_dialog.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:neamah/screens/Donner_screen.dart';
 import 'package:neamah/screens/PIN_screen.dart';
+import 'package:neamah/components/user_data.dart';
+import 'package:neamah/components/Location.dart';
 
-class log_in_screen extends StatefulWidget {
-  @override
-  _log_in_screenState createState() => _log_in_screenState();
-}
-
-class _log_in_screenState extends State<log_in_screen> {
+class log_in_screen extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
   String email = '';
   String password = '';
-  bool? Donner = false;
-  bool? PersonInNeed = false;
-  // Completer<GoogleMapController> _controller = Completer();
 
   @override
   Widget build(BuildContext context) {
@@ -42,45 +32,23 @@ class _log_in_screenState extends State<log_in_screen> {
               obscureText: true,
               decoration: InputDecoration(hintText: 'password'),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('I am a donner'),
-                Checkbox(
-                    value: Donner,
-                    onChanged: (bool) {
-                      setState(() {
-                        Donner = bool;
-                        PersonInNeed = false;
-                      });
-                    }),
-                Text('I am a person in need'),
-                Checkbox(
-                    value: PersonInNeed,
-                    onChanged: (bool) {
-                      setState(() {
-                        PersonInNeed = bool;
-                        Donner = false;
-                      });
-                    }),
-              ],
-            ),
             ElevatedButton(
               onPressed: () async {
-                if (email == '' ||
-                    password == '' ||
-                    (Donner == false && PersonInNeed == false)) {
-                  alert(context,
-                      title: Text('error'),
-                      content: Text('some data is missing'));
+                if (email == '' || password == '') {
+                  showOkAlertDialog(
+                    context: context,
+                    title: 'error',
+                    message: 'some data is missing',
+                  );
                 } else {
                   try {
                     final user = await _auth.signInWithEmailAndPassword(
                         email: email, password: password);
+                    final type = await user_data.getCurrentUserType();
 
                     if (user != null) {
-                      if (Donner == true) {
+                      // user_data.getCurrentUserType() == 1
+                      if (type == 1) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) {
@@ -88,10 +56,12 @@ class _log_in_screenState extends State<log_in_screen> {
                           }),
                         );
                       } else {
+                        var loc = await Location.getLocation();
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) {
-                            return PIN_screen();
+                            return PIN_screen(loc);
                           }),
                         );
                       }
@@ -109,28 +79,3 @@ class _log_in_screenState extends State<log_in_screen> {
     );
   }
 }
-
-/*
-
-showModalBottomSheet(
-                  isScrollControlled:
-                      true, // so that keyboard won't cover add button on the sheet
-                  context: context,
-                  builder: (context) => Container(
-                    height: MediaQuery.of(context).size.height * 0.70,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text('GoogleMapHere'),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('Set location'),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-
- */

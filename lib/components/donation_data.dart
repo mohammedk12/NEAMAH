@@ -2,12 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:neamah/components/donation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
-// provider object
+final _firestore = FirebaseFirestore.instance;
+
+/*
+
+donation provider
+
+notice in every method, first we edit the donation provider list,
+then we edit 'Donations' in fire base
+
+you want to read or write something related to donations?
+you should use one of the methods here
+
+ */
+
 class donation_data extends ChangeNotifier {
   List<Donation> donations = [];
 
@@ -19,27 +28,50 @@ class donation_data extends ChangeNotifier {
   late String foodOrCloths;
   late String id;
   late String imageFile;
+  late var time;
+  late String donationClaimer;
 
   void add_Donation(_imageFile, address, foodOrCloths, donationStatus,
-      dropdownValue, discreption, id, email) {
+      dropdownValue, discreption, id, email, time, donationClaimer) async {
     donations.add(Donation(_imageFile, address, foodOrCloths, donationStatus,
-        dropdownValue, discreption, id, email));
-    notifyListeners();
+        dropdownValue, discreption, id, email, time, donationClaimer));
+    await Future.delayed(Duration.zero, () async {
+      notifyListeners();
+    });
     print('adding to provider');
   }
 
-  void delete_Donation(Donation d) {
-    donations.remove(d);
-    notifyListeners();
+  void delete_Donation(Donation don) async {
+    _firestore.collection('donations').doc('${don.id}').delete();
+    donations.remove(don);
+    Future.delayed(Duration.zero, () async {
+      notifyListeners();
+    });
+  }
+
+  void updateStatus(Donation d, String new_status) {
+    _firestore
+        .collection('donations')
+        .doc('${d.id}')
+        .update({'donation_status': new_status});
+
+    donations[donations.indexWhere((don) => don.id == d.id)].donationStatus =
+        new_status;
+    Future.delayed(Duration.zero, () async {
+      notifyListeners();
+    });
+  }
+
+  void setDonationClaimer(Donation d, String claimer) {
+    _firestore
+        .collection('donations')
+        .doc('${d.id}')
+        .update({'donation_claimer': claimer});
+
+    donations[donations.indexWhere((don) => don.id == d.id)].donationClaimer =
+        claimer;
+    Future.delayed(Duration.zero, () async {
+      notifyListeners();
+    });
   }
 }
-//   void updateTask(Task task) {
-//     task.toggleDone();
-//     notifyListeners();
-//   }
-//
-//   void deleteTask(Task task) {
-//     tasks.remove(task);
-//     notifyListeners();
-//   }
-// }

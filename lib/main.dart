@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:neamah/screens/innetial_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:neamah/components/donation_data.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase
   await Firebase.initializeApp();
-  //
+
   runApp(MaterialApp(home: MyApp()));
 }
 

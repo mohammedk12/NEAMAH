@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:neamah/components/setLocationButton.dart';
-import 'package:alert_dialog/alert_dialog.dart';
-import 'package:neamah/screens/Donner_screen.dart';
-import 'package:neamah/screens/PIN_screen.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:neamah/screens/login_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -34,25 +32,19 @@ class _Regestration_screenState extends State<Regestration_screen> {
           children: [
             TextField(
               onChanged: (val) {
-                setState(() {
-                  name = val;
-                });
+                name = val;
               },
               decoration: InputDecoration(hintText: 'name'),
             ),
             TextField(
               onChanged: (val) {
-                setState(() {
-                  email = val;
-                });
+                email = val;
               },
               decoration: InputDecoration(hintText: 'email'),
             ),
             TextField(
               onChanged: (val) {
-                setState(() {
-                  password = val;
-                });
+                password = val;
               },
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
@@ -61,18 +53,14 @@ class _Regestration_screenState extends State<Regestration_screen> {
             ),
             TextField(
               onChanged: (val) {
-                setState(() {
-                  retypedPassword = val;
-                });
+                retypedPassword = val;
               },
               obscureText: true,
               decoration: InputDecoration(hintText: 'retype password'),
             ),
             TextField(
               onChanged: (val) {
-                setState(() {
-                  id = val;
-                });
+                id = val;
               },
               decoration: InputDecoration(hintText: 'ID'),
             ),
@@ -107,13 +95,17 @@ class _Regestration_screenState extends State<Regestration_screen> {
                     retypedPassword == '' ||
                     id == '' ||
                     (Donner == false && PersonInNeed == false)) {
-                  alert(context,
-                      title: Text('error'),
-                      content: Text('some data is missing'));
+                  showOkAlertDialog(
+                    context: context,
+                    title: 'error',
+                    message: 'some data is missing',
+                  );
                 } else if (password != retypedPassword) {
-                  alert(context,
-                      title: Text('error'),
-                      content: Text('retypedPassword dose\'nt match password'));
+                  showOkAlertDialog(
+                    context: context,
+                    title: 'error',
+                    message: 'retypedPassword dose\'nt match password',
+                  );
                 } else {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
@@ -126,24 +118,17 @@ class _Regestration_screenState extends State<Regestration_screen> {
                       'DonnerOrPIN': Donner == true ? 1 : 2,
                       'id': id,
                       'name': name,
+                      'claimed_don': '',
+                      'email': email,
                     });
 
                     if (newUser != null) {
-                      if (Donner == true) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return Donner_view_donations_screen();
-                          }),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return PIN_screen();
-                          }),
-                        );
-                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return log_in_screen();
+                        }),
+                      );
                     }
                   } catch (e) {
                     print(e);

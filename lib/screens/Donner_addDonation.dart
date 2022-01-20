@@ -1,20 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:neamah/screens/login_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:neamah/components/setLocationButton.dart';
-import 'package:alert_dialog/alert_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:uuid/uuid.dart';
+import 'package:neamah/components/user_data.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
-User? activeUser;
-String donationStatus = 'incompleted';
+String donationStatus = 'not claimed';
+String donationClaimer = 'no claimer yet';
 
 class addDonation extends StatefulWidget {
   @override
@@ -22,39 +20,15 @@ class addDonation extends StatefulWidget {
 }
 
 class _addDonationState extends State<addDonation> {
-  final _auth = FirebaseAuth.instance;
-
   bool? food = false;
   bool? cloths = false;
   String discreption = '';
   PickedFile? _imageFile;
   int dropdownValue = 1;
   late LatLng address;
-  late String id = '?';
 
   String imageUrl =
       'https://firebasestorage.googleapis.com/v0/b/neamah-7e68e.appspot.com/o/images%2Fdownload.png?alt=media&token=c9fb9bfb-0ba0-45d2-bf57-f2bd69882901';
-
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      print(user!.email);
-      // user will be null if the user is not logged in
-
-      if (user != null) {
-        activeUser = user;
-      } else {
-        print('nulllllllllll');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 
   ImagePicker _picker = ImagePicker();
 
@@ -103,14 +77,6 @@ class _addDonationState extends State<addDonation> {
     });
 
     if (_imageFile != null) {
-      //Upload to Firebase
-
-      //
-      // var snapshot = await FirebaseStorage.instance
-      //     .ref()
-      //     .child('images/${DateTime.now().millisecondsSinceEpoch}.png')
-      //     .putFile(File(_imageFile!.path));
-
       final imageName = '${DateTime.now().millisecondsSinceEpoch}.png';
 
       final taskSnapshot = await FirebaseStorage.instance
@@ -195,32 +161,22 @@ class _addDonationState extends State<addDonation> {
             if (discreption == '' ||
                 address == null ||
                 (food == false && cloths == false)) {
-              alert(context,
-                  title: Text('error'), content: Text('some data is missing'));
+              showOkAlertDialog(
+                context: context,
+                title: 'error',
+                message: 'some data is missing',
+              );
             } else {
-              // final file = File(_imageFile!.path);
-              // final imageName = '${DateTime.now().millisecondsSinceEpoch}.png';
-              // final firebaseStorageRef =
-              //     FirebaseStorage.instance.ref().child('images/$imageName');
-              // // final uploadTask = firebaseStorageRef.putFile(file);
-              // // final taskSnapshot = await uploadTask;
-              // // final _fileURL = await taskSnapshot.ref.getDownloadURL();
-
               try {
-                setState(() {
-                  id = Uuid().v1();
-                });
-                print('this is id : $id');
-
                 _firestore.collection('donations').add({
                   'address': GeoPoint(address.latitude, address.longitude),
                   'discreption': discreption,
                   'donation_status': donationStatus,
                   'dropdownvalue': dropdownValue,
-                  'email': activeUser!.email,
+                  'email': user_data.getCurrentUserEmail(),
                   'food_or_cloths': food == true ? 'food' : 'cloths',
-                  'id': id,
                   'image': imageUrl,
+                  'donation_claimer': donationClaimer,
                   'timestamp': FieldValue
                       .serverTimestamp(), //to save time of messge so we can display it in order
                 });
