@@ -11,7 +11,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
-String donationStatus = 'not claimed';
+String donationStatus = 'Not Claimed';
 String donationClaimer = 'no claimer yet';
 
 class addDonation extends StatefulWidget {

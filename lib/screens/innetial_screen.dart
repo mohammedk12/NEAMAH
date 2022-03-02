@@ -7,7 +7,7 @@ class innetial_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow,
+      backgroundColor: Colors.grey[500],
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Center(
@@ -23,7 +23,7 @@ class innetial_screen extends StatelessWidget {
                     }),
                   );
                 },
-                child: Text('log in'),
+                child: Text('SIGN IN'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -34,7 +34,7 @@ class innetial_screen extends StatelessWidget {
                     }),
                   );
                 },
-                child: Text('register'),
+                child: Text('SIGN UP'),
               )
             ],
           ),

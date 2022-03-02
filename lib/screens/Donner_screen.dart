@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:neamah/components/user_data.dart';
 import 'package:neamah/screens/donation%20screens/donation_details_page_donner.dart';
+import 'package:neamah/screens/donation screens/changePassword.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -36,17 +37,19 @@ class _Donner_view_donations_screenState
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        backgroundColor:  Color(0xFFFCFAF6),
         appBar: AppBar(
+          backgroundColor: Color(0xFF004086),
           leading: IconButton(
-            icon: Icon(Icons.close),
+            icon: Icon(CupertinoIcons.arrow_left),
             onPressed: () => Navigator.of(context)
               ..pop()
               ..pop(),
+
           ),
-          title: Center(
-            child: Text('NEAMAH'),
-          ),
-          backgroundColor: Colors.lightBlueAccent,
+          centerTitle: true,
+          title: Text('NA\'MAH'),
+          //Color(0xFF007AFF),
         ),
         body: w.elementAt(NavigationBarIndex),
         bottomNavigationBar: BottomNavigationBar(
@@ -80,15 +83,17 @@ class _Donner_view_donations_screenState
           },
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.view_list), title: Text('my donations')),
+                icon: Icon(Icons.view_list),
+          backgroundColor: Color(0xFF007AFF),
+                title: Text('My Donations')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.add),
-                backgroundColor: Colors.blue,
-                title: Text('add donation')),
+                backgroundColor: Color(0xFF007AFF),
+                title: Text('Add Donation')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                backgroundColor: Colors.blue,
-                title: Text('edit profile')),
+                backgroundColor: Color(0xFF007AFF),
+                title: Text('Profile')),
           ],
         ),
       ),
@@ -176,75 +181,91 @@ class myDonations extends StatelessWidget {
 
               return Center(
                 child: InkWell(
-                  child: Container(
-                    height: 200,
-                    width: 150,
-                    color: Colors.lightBlue,
-                    child: Column(
-                      children: [
-                        Text(discreption),
-                        Text(email),
-                        //    Text(foodOrCloths),
-                        // Text(dropdownValue),
-                        Text(donationStatus),
-                        //    Text(time),
-                        //   Text(donationClaimer),
-                        Image.network(
-                          image,
-                          height: 100,
-                          width: 100,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  Provider.of<donation_data>(context,
-                                          listen: false)
-                                      .delete_Donation(
-                                          Provider.of<donation_data>(context,
-                                                  listen: false)
-                                              .donations[index]);
-                                  print('deleted!');
-                                },
-                                child: Text('Delete Donation')),
-                            // SizedBox(
-                            //   width: 10,
-                            // ),
-                            // ElevatedButton(
-                            //     onPressed: () async {
-                            //       GeoPoint gp = Provider.of<donation_data>(
-                            //               context,
-                            //               listen: false)
-                            //           .donations[index]
-                            //           .address;
-                            //
-                            //       //  double distanceBetweenTwoPoints = Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
-                            //
-                            //       await Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(builder: (context) {
-                            //           //  return map(Location.latitude, Location.longitude);
-                            //           return GoogleMap(
-                            //             zoomControlsEnabled: false,
-                            //             initialCameraPosition: CameraPosition(
-                            //                 target: LatLng(
-                            //                     gp.latitude, gp.longitude),
-                            //                 zoom: 20),
-                            //             markers: {
-                            //               Marker(
-                            //                   markerId: MarkerId('1'),
-                            //                   position: LatLng(
-                            //                       gp.latitude, gp.longitude))
-                            //             },
-                            //           );
-                            //         }),
-                            //       );
-                            //     },
-                            //     child: Text('check location')),
-                          ],
-                        ),
-                      ],
+
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 7, 0, 7),
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      height: 200,
+                      width: 165,
+                     decoration: BoxDecoration(color :Colors.grey[100],boxShadow:[BoxShadow(color: Colors.grey.withOpacity(0.2),
+                         spreadRadius: 5,blurRadius: 7,offset: Offset(0,3))],borderRadius: BorderRadius.all(Radius.circular(10)) ),
+
+                 //  color: Color(0xFFFCFCFC),
+                 //   color: Colors.white60,
+                      child: Column(
+                        children: [
+                      //    Text(discreption),
+                     //     Text(email),
+                          //    Text(foodOrCloths),
+                          // Text(dropdownValue),
+                    //      Text(donationStatus),
+                          //    Text(time),
+                          //   Text(donationClaimer),
+                          Image.network(
+                            image,
+                            fit: BoxFit.fill,
+                            height: 140,
+                            width: 130,
+                          ),
+                          SizedBox(height: 10),
+                          Text(donationStatus,//style: TextStyle(color: Colors.white),
+                             ),
+                 /*       Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Provider.of<donation_data>(context,
+                                            listen: false)
+                                        .delete_Donation(
+                                            Provider.of<donation_data>(context,
+                                                    listen: false)
+                                                .donations[index]);
+                                    print('deleted!');
+                                  },
+                                  child: Text('Delete Donation')),
+                              // SizedBox(
+                              //   width: 10,
+                              // ),
+                              // ElevatedButton(
+                              //     onPressed: () async {
+                              //       GeoPoint gp = Provider.of<donation_data>(
+                              //               context,
+                              //               listen: false)
+                              //           .donations[index]
+                              //           .address;
+                              //
+                              //       //  double distanceBetweenTwoPoints = Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
+                              //
+                              //       await Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(builder: (context) {
+                              //           //  return map(Location.latitude, Location.longitude);
+                              //           return GoogleMap(
+                              //             zoomControlsEnabled: false,
+                              //             initialCameraPosition: CameraPosition(
+                              //                 target: LatLng(
+                              //                     gp.latitude, gp.longitude),
+                              //                 zoom: 20),
+                              //             markers: {
+                              //               Marker(
+                              //                   markerId: MarkerId('1'),
+                              //                   position: LatLng(
+                              //                       gp.latitude, gp.longitude))
+                              //             },
+                              //           );
+                              //         }),
+                              //       );
+                              //     },
+                              //     child: Text('check location')),
+                            ],
+                          ),
+                         */
+
+                        ],
+                      ),
+
                     ),
                   ),
                   onTap: () {

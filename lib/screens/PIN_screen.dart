@@ -120,11 +120,13 @@ class _PIN_screenState extends State<PIN_screen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
+
           icon: Icon(Icons.close),
           onPressed: () => Navigator.of(context)
             ..pop()
             ..pop(),
         ),
+
         actions: <Widget>[
           IconButton(
               icon: IconButton(
@@ -141,8 +143,8 @@ class _PIN_screenState extends State<PIN_screen> {
                 fillProvidersFromFB();
               }),
         ],
-        title: Text('NEAMAH'),
-        backgroundColor: Colors.lightBlueAccent,
+        title: Center(child: Text('NA\'MAH')),
+        backgroundColor: Color(0xFF004086),
       ),
       body: widget.w.elementAt(NavigationBarIndex),
       bottomNavigationBar: BottomNavigationBar(

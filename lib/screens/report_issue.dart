@@ -15,24 +15,37 @@ class report_issue extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Neamah'),
+        backgroundColor: Color(0xFF004086),
+        centerTitle: true,
+        title: Text('Report an Issue'),
       ),
-      body: Material(
-        child: Container(
-          color: Colors.white,
+      body:Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: SingleChildScrollView(
+      reverse: true,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('report an issue:'),
+              SizedBox(height: 40),
               TextField(
                 onChanged: (val) {
                   issue = val;
                 },
-                decoration:
-                    InputDecoration(hintText: 'please describe your issue'),
+
+                decoration: InputDecoration(hintText: 'Describe Your Issue',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Color(0xFFD1D0D4))
+                ),
               ),
-              ElevatedButton(
-                  onPressed: () {
+
+              SizedBox(height: 160),
+
+          ClipRRect(
+                 borderRadius: BorderRadius.circular(8),
+                 child: FlatButton(
+                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 75),//55
+                 color: Color(0xFF007AFF),
+                 onPressed: () {
+
                     if (issue.isEmpty) {
                       showOkAlertDialog(
                         context: context,
@@ -53,8 +66,10 @@ class report_issue extends StatelessWidget {
                       ).then((value) => Navigator.pop(context));
                     }
                   },
-                  child: Text('submit'))
-            ],
+                  child: Text('submit',
+                    style: TextStyle(color: Colors.white),
+                  ))
+          )],
           ),
         ),
       ),
