@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:neamah/components/user_data.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 
+
 final _firestore = FirebaseFirestore.instance;
 
 String donationStatus = 'Not Claimed';
@@ -35,36 +36,32 @@ class _addDonationState extends State<addDonation> {
   Widget myImage() {
     return Column(
       children: [
-        Container(
-          height: 120.0,
-          width: 120.0,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: _imageFile == null
-                  ? NetworkImage(imageUrl) as ImageProvider
-                  : FileImage(File(_imageFile!.path)),
-              fit: BoxFit.fill,
+
+        InkWell(
+
+            child: Container(
+              height: 150.0,
+              width: 150,
+              decoration: BoxDecoration(color :Colors.grey[100],boxShadow:[BoxShadow(color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,blurRadius: 7,offset: Offset(0,3))],borderRadius: BorderRadius.all(Radius.circular(10)) ,
+
+                //TODO:
+                image: DecorationImage(
+                  image: _imageFile == null
+                      ? NetworkImage(imageUrl) as ImageProvider
+                      : FileImage(File(_imageFile!.path)),
+                  fit: BoxFit.fill,
+
+                ),
+              ),
+
             ),
-          ),
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          Text('add picture: '),
-          FlatButton.icon(
-            icon: Icon(Icons.camera),
-            onPressed: () {
-              takePhoto(ImageSource.camera);
-            },
-            label: Text("Camera"),
-          ),
-          FlatButton.icon(
-            icon: Icon(Icons.image),
-            onPressed: () {
-              takePhoto(ImageSource.gallery);
-            },
-            label: Text("Gallery"),
-          ),
-        ]),
-      ],
+
+          onTap: () {
+            takePhoto(ImageSource.camera);
+          },
+        )
+      ]
     );
   }
 
@@ -96,98 +93,149 @@ class _addDonationState extends State<addDonation> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('food'),
-            Checkbox(
-                value: food,
-                onChanged: (bool) {
-                  setState(() {
-                    food = bool;
-                    cloths = false;
-                  });
-                }),
-            Text('cloths'),
-            Checkbox(
-                value: cloths,
-                onChanged: (bool) {
-                  setState(() {
-                    cloths = bool;
-                    food = false;
-                  });
-                }),
-          ],
+        myImage(),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Row(
+           // crossAxisAlignment: CrossAxisAlignment.center,
+          //  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Donation Type:   ',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+              Text('Food'),
+              Checkbox(
+                  value: food,   //
+                  onChanged: (bool) {
+                    setState(() {
+                      food = bool;
+                      cloths = false;
+                    });
+                  }),
+              Text('Cloths'),
+              Checkbox(
+                  value: cloths,
+                  onChanged: (bool) {
+                    setState(() {
+                      cloths = bool;
+                      food = false;
+                    });
+                  }),
+            ],
+          ),
         ),
-        TextField(
-          onChanged: (val) {
-            discreption = val;
-          },
-          decoration: InputDecoration(hintText: 'discreption'),
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Row(
+
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+
+              Text('Description:',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+            ],
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 30,right: 30),
+          child: TextField(
+            onChanged: (val) {
+              discreption = val;
+            },
+            decoration: InputDecoration(hintText: ' (Ex. rice and chicken, 2 shirts)'),
+          ),
         ),
         SizedBox(
           height: 10,
         ),
-        myImage(),
+       // myImage(),
         SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text('qunatity for how many people?'),
-            DropdownButton<String>(
-              value: dropdownValue.toString(),
-              icon: Icon(Icons.arrow_downward),
-              onChanged: (newValue) {
-                setState(() {
-                  dropdownValue = int.parse(newValue!);
-                });
-              },
-              items: <String>['1', '2', '3', '4']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('Quantity ',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+              Text('for how many people?        ',style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16)),
+              SizedBox(height: 10),
+             /* Wrap(
+                children: List.generate(4, (index) {
+                 return quan_button(size: 50,
+                   backgraColor: Color(0xFFf1f1f9),
+                   borderColor: Color(0xFFf1f1f9),
+                   TextColor: Colors.black,
+                   haveText:false,
+
+                    text: index.toString(),
+
+                 );
+
+    }
+                )
+              ),*/
+              DropdownButton<String>(
+                value: dropdownValue.toString(),
+                icon: Icon(Icons.arrow_downward),
+                onChanged: (newValue) {
+                  setState(() {
+                    dropdownValue = int.parse(newValue!);
+                  });
+                },
+                items: <String>['1', '2', '3', '4']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         ),
+        SizedBox(height: 5),
         setLocationButton(),
-        ElevatedButton(
-          onPressed: () async {
-            address = setLocationButton.address;
+        SizedBox(height: 10),
+        Container(
+          width: 200,
+          height: 45,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: FlatButton(
+              color: Colors.blue[800],
+              onPressed: () async {
+                address = setLocationButton.address;
 
-            if (discreption == '' ||
-                address == null ||
-                (food == false && cloths == false)) {
-              showOkAlertDialog(
-                context: context,
-                title: 'error',
-                message: 'some data is missing',
-              );
-            } else {
-              try {
-                _firestore.collection('donations').add({
-                  'address': GeoPoint(address.latitude, address.longitude),
-                  'discreption': discreption,
-                  'donation_status': donationStatus,
-                  'dropdownvalue': dropdownValue,
-                  'email': user_data.getCurrentUserEmail(),
-                  'food_or_cloths': food == true ? 'food' : 'cloths',
-                  'image': imageUrl,
-                  'donation_claimer': donationClaimer,
-                  'timestamp': FieldValue
-                      .serverTimestamp(), //to save time of messge so we can display it in order
-                });
+                if (discreption == '' ||
+                    address == null ||
+                    (food == false && cloths == false)) {
+                  showOkAlertDialog(
+                    context: context,
+                    title: 'error',
+                    message: 'some data is missing',
+                  );
+                } else {
+                  try {
+                    _firestore.collection('donations').add({
+                      'address': GeoPoint(address.latitude, address.longitude),
+                      'discreption': discreption,
+                      'donation_status': donationStatus,
+                      'dropdownvalue': dropdownValue,
+                      'email': user_data.getCurrentUserEmail(),
+                      'food_or_cloths': food == true ? 'food' : 'cloths',
+                      'image': imageUrl,
+                      'donation_claimer': donationClaimer,
+                      'timestamp': FieldValue
+                          .serverTimestamp(), //to save time of messge so we can display it in order
+                    });
 
-                Navigator.pop(context);
-              } catch (e) {
-                print(e);
-              }
-            }
-          },
-          child: Text('add donation'),
+                    Navigator.pop(context);
+                  } catch (e) {
+                    print(e);
+                  }
+                }
+              },
+              child: Text('Add Donation',style: TextStyle(color: Colors.white)),
+            ),
+          ),
         ),
       ],
     );

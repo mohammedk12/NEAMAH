@@ -224,148 +224,166 @@ class viewDonations extends StatelessWidget {
 
         return Center(
           child: InkWell(
-            child: Container(
-              height: 200,
-              width: 150,
-              color: Colors.lightBlue,
-              child: Column(
-                children: [
-                  Text(calcDistence() + 'KM'),
-                  Text(DD_provider.donations[index].email),
-                  // Text(DD_provider.donations[index].foodOrCloths),
-                  // Text(DD_provider.donations[index].dropdownValue.toString()),
-                  // Text(DD_provider.donations[index].donationStatus),
-                  Text(DD_provider.donations[index].discreption),
-                  // Text(DD_provider.donations[index].time.toString()),
-                  Text(DD_provider.donations[index].donationClaimer),
-                  Image.network(
-                    DD_provider.donations[index].imageFile,
-                    height: 88,
-                    width: 100,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 7, 0, 7),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  height: 200,
+                  width: 165,
+                  decoration: BoxDecoration(color :Colors.grey[100],boxShadow:[BoxShadow(color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 5,blurRadius: 7,offset: Offset(0,3))],borderRadius: BorderRadius.all(Radius.circular(10)) ),
+
+                  child: Column(
                     children: [
-                      // ElevatedButton(
-                      //     onPressed: () async {
-                      //       GeoPoint gp = Provider.of<donation_data>(context,
-                      //               listen: false)
-                      //           .donations[index]
-                      //           .address;
-                      //       await Navigator.push(
-                      //         context,
-                      //         MaterialPageRoute(builder: (context) {
-                      //           //  return map(Location.latitude, Location.longitude);
-                      //           return GoogleMap(
-                      //             zoomControlsEnabled: false,
-                      //             initialCameraPosition: CameraPosition(
-                      //                 target: LatLng(gp.latitude, gp.longitude),
-                      //                 zoom: 20),
-                      //             markers: {
-                      //               Marker(
-                      //                   markerId: MarkerId('1'),
-                      //                   position:
-                      //                       LatLng(gp.latitude, gp.longitude))
-                      //             },
-                      //           );
-                      //         }),
-                      //       );
-                      //     },
-                      //     child: Text('check location')),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      ElevatedButton(
-                          style: DD_provider.donations[index].donationStatus
-                                          .toString()
-                                          .length !=
-                                      9 &&
-                                  (user_data.getCurrentUserEmail() ==
+                      Image.network(
+                      DD_provider.donations[index].imageFile,
+                      fit: BoxFit.fill,
+                      height: 140,
+                      width: 130,
+                    ),
+                      SizedBox(height: 3),
+                      Text(calcDistence() + 'KM'),
+                      SizedBox(height: 3),
+                  //    Text(DD_provider.donations[index].email),
+                      // Text(DD_provider.donations[index].foodOrCloths),
+                      // Text(DD_provider.donations[index].dropdownValue.toString()),
+                       Text(DD_provider.donations[index].donationStatus),
+                      SizedBox(height: 3.5),
+                 //     Text(DD_provider.donations[index].discreption),
+                      // Text(DD_provider.donations[index].time.toString()),
+                //      Text(DD_provider.donations[index].donationClaimer),
+
+                   //   Row(
+                     //   mainAxisAlignment: MainAxisAlignment.center,
+                    //    children: [
+                          // ElevatedButton(
+                          //     onPressed: () async {
+                          //       GeoPoint gp = Provider.of<donation_data>(context,
+                          //               listen: false)
+                          //           .donations[index]
+                          //           .address;
+                          //       await Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(builder: (context) {
+                          //           //  return map(Location.latitude, Location.longitude);
+                          //           return GoogleMap(
+                          //             zoomControlsEnabled: false,
+                          //             initialCameraPosition: CameraPosition(
+                          //                 target: LatLng(gp.latitude, gp.longitude),
+                          //                 zoom: 20),
+                          //             markers: {
+                          //               Marker(
+                          //                   markerId: MarkerId('1'),
+                          //                   position:
+                          //                       LatLng(gp.latitude, gp.longitude))
+                          //             },
+                          //           );
+                          //         }),
+                          //       );
+                          //     },
+                          //     child: Text('check location')),
+                     /*     SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                              style: DD_provider.donations[index].donationStatus
+                                              .toString()
+                                              .length !=
+                                          9 &&
+                                      (user_data.getCurrentUserEmail() ==
+                                              DD_provider.donations[index]
+                                                  .donationClaimer ||
                                           DD_provider.donations[index]
-                                              .donationClaimer ||
-                                      DD_provider.donations[index]
-                                              .donationClaimer ==
-                                          'no claimer yet') //not equal completed or cancelled
-                              ? ElevatedButton.styleFrom(primary: Colors.blue)
-                              : ElevatedButton.styleFrom(primary: Colors.grey),
-                          onPressed: () async {
-                            if (DD_provider.donations[index].donationStatus
-                                    .toString() ==
-                                'not claimed') {
-                              //  fillProvidersFromFB();
+                                                  .donationClaimer ==
+                                              'no claimer yet') //not equal completed or cancelled
+                                  ? ElevatedButton.styleFrom(primary: Colors.blue)
+                                  : ElevatedButton.styleFrom(primary: Colors.grey),
+                              onPressed: () async {
+                                if (DD_provider.donations[index].donationStatus
+                                        .toString() ==
+                                    'not claimed') {
+                                  //  fillProvidersFromFB();
 
-                              Provider.of<donation_data>(context, listen: false)
-                                  .updateStatus(
+                                  Provider.of<donation_data>(context, listen: false)
+                                      .updateStatus(
+                                          Provider.of<donation_data>(context,
+                                                  listen: false)
+                                              .donations[index],
+                                          'Claimed');
+
+                                  Provider.of<donation_data>(context, listen: false)
+                                      .setDonationClaimer(
+                                          Provider.of<donation_data>(context,
+                                                  listen: false)
+                                              .donations[index],
+                                          '${user_data.getCurrentUserEmail()}');
+
+                                  user_data.setCurrentUserClaimedDON_id(
                                       Provider.of<donation_data>(context,
                                               listen: false)
-                                          .donations[index],
-                                      'Claimed');
+                                          .donations[index]
+                                          .id);
 
-                              Provider.of<donation_data>(context, listen: false)
-                                  .setDonationClaimer(
-                                      Provider.of<donation_data>(context,
-                                              listen: false)
-                                          .donations[index],
-                                      '${user_data.getCurrentUserEmail()}');
-
-                              user_data.setCurrentUserClaimedDON_id(
-                                  Provider.of<donation_data>(context,
-                                          listen: false)
-                                      .donations[index]
-                                      .id);
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return claimed_donation_page(
-                                      DD_provider_false, index);
-                                }),
-                              );
-                            } else if (DD_provider
-                                    .donations[index].donationStatus
-                                    .toString() ==
-                                'Claimed') {
-                              if (user_data.getCurrentUserEmail() ==
-                                  DD_provider
-                                      .donations[index].donationClaimer) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return claimed_donation_page(
-                                        DD_provider_false, index);
-                                  }),
-                                );
-                              } else {
-                                print('dose not equal !');
-                              }
-                            } else {
-                              // if cancelled or completed
-                              print('false');
-                            }
-                          },
-                          child: Text(
-                            'Claim',
-                          )),
-                      // SizedBox(
-                      //   width: 10,
-                      // ),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(builder: (context) {
-                      //         return report_issue(
-                      //             DD_provider.donations[index].id);
-                      //       }),
-                      //     );
-                      //   },
-                      //   child: Text('report'),
-                      // )
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return claimed_donation_page(
+                                          DD_provider_false, index);
+                                    }),
+                                  );
+                                } else if (DD_provider
+                                        .donations[index].donationStatus
+                                        .toString() ==
+                                    'Claimed') {
+                                  if (user_data.getCurrentUserEmail() ==
+                                      DD_provider
+                                          .donations[index].donationClaimer) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return claimed_donation_page(
+                                            DD_provider_false, index);
+                                      }),
+                                    );
+                                  } else {
+                                    print('dose not equal !');
+                                  }
+                                } else {
+                                  // if cancelled or completed
+                                  print('false');
+                                }
+                              },
+                              child: Text(
+                                'Claim',
+                              )),
+                          // SizedBox(
+                          //   width: 10,
+                          // ),
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(builder: (context) {
+                          //         return report_issue(
+                          //             DD_provider.donations[index].id);
+                          //       }),
+                          //     );
+                          //   },
+                          //   child: Text('report'),
+                          // )
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
+            */
+        ],
+                  ),
+        ),
+              ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return donation_details_page_PIN(

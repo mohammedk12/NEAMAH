@@ -13,7 +13,38 @@ class setLocationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return Container(
+          width: 200,
+          height: 45,
+
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: FlatButton(
+                    color: Colors.blue[800],
+
+              onPressed: () async {
+                  // await Location
+                  //     .getLocation();
+
+                var loc = await Location.getLocation();
+
+                address = await Navigator.push(
+                            context,
+                MaterialPageRoute(builder: (context) {
+                    return map(loc);
+              }
+            ),
+          );
+            },
+          child:
+          Text('Setup Location',style: TextStyle(color: Colors.white)),
+        ),
+            ),
+        );
+      }
+    }
+
+/* return ElevatedButton(
       onPressed: () async {
         // await Location
         //     .getLocation();
@@ -31,3 +62,5 @@ class setLocationButton extends StatelessWidget {
     );
   }
 }
+
+    */
