@@ -9,11 +9,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:neamah/components/user_data.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 
-
 final _firestore = FirebaseFirestore.instance;
 
 String donationStatus = 'Not Claimed';
 String donationClaimer = 'no claimer yet';
+String claimerPhone = '';
 
 class addDonation extends StatefulWidget {
   @override
@@ -34,35 +34,45 @@ class _addDonationState extends State<addDonation> {
   ImagePicker _picker = ImagePicker();
 
   Widget myImage() {
-    return Column(
-      children: [
+    return Column(children: [
+      InkWell(
+        child: Container(
+          // height: 150.0,
+          // width: 150,
+          height: 100.0,
+          width: 100,
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3))
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(10)),
 
-        InkWell(
-
-            child: Container(
-              height: 150.0,
-              width: 150,
-              decoration: BoxDecoration(color :Colors.grey[100],boxShadow:[BoxShadow(color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 5,blurRadius: 7,offset: Offset(0,3))],borderRadius: BorderRadius.all(Radius.circular(10)) ,
-
-                //TODO:
-                image: DecorationImage(
-                  image: _imageFile == null
-                      ? NetworkImage(imageUrl) as ImageProvider
-                      : FileImage(File(_imageFile!.path)),
-                  fit: BoxFit.fill,
-
-                ),
-              ),
-
+            //TODO:
+            image: DecorationImage(
+              image: _imageFile == null
+                  ? NetworkImage(imageUrl) as ImageProvider
+                  : FileImage(File(_imageFile!.path)),
+              fit: BoxFit.fill,
             ),
-
-          onTap: () {
-            takePhoto(ImageSource.camera);
-          },
-        )
-      ]
-    );
+          ),
+        ),
+        onTap: () {
+          takePhoto(ImageSource.camera);
+        },
+      ),
+      FlatButton.icon(
+        icon: Icon(Icons.image),
+        onPressed: () {
+          takePhoto(ImageSource.gallery);
+        },
+        label: Text("Gallery"),
+      ),
+    ]);
   }
 
   Future takePhoto(ImageSource source) async {
@@ -98,13 +108,14 @@ class _addDonationState extends State<addDonation> {
         Padding(
           padding: const EdgeInsets.only(left: 30),
           child: Row(
-           // crossAxisAlignment: CrossAxisAlignment.center,
-          //  mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            //  mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Donation Type:   ',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+              Text('Donation Type:   ',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
               Text('Food'),
               Checkbox(
-                  value: food,   //
+                  value: food, //
                   onChanged: (bool) {
                     setState(() {
                       food = bool;
@@ -126,52 +137,39 @@ class _addDonationState extends State<addDonation> {
         Padding(
           padding: const EdgeInsets.only(left: 30),
           child: Row(
-
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-
-              Text('Description:',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
+              Text('Description:',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
             ],
           ),
         ),
 
         Padding(
-          padding: const EdgeInsets.only(left: 30,right: 30),
+          padding: const EdgeInsets.only(left: 30, right: 30),
           child: TextField(
             onChanged: (val) {
               discreption = val;
             },
-            decoration: InputDecoration(hintText: ' (Ex. rice and chicken, 2 shirts)'),
+            decoration:
+                InputDecoration(hintText: ' (Ex. rice and chicken, 2 shirts)'),
           ),
         ),
         SizedBox(
           height: 10,
         ),
-       // myImage(),
+        // myImage(),
         SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.only(left: 30),
           child: Row(
             //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text('Quantity ',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18)),
-              Text('for how many people?        ',style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16)),
+              Text('Quantity ',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
+              Text('for how many people?        ',
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
               SizedBox(height: 10),
-             /* Wrap(
-                children: List.generate(4, (index) {
-                 return quan_button(size: 50,
-                   backgraColor: Color(0xFFf1f1f9),
-                   borderColor: Color(0xFFf1f1f9),
-                   TextColor: Colors.black,
-                   haveText:false,
-
-                    text: index.toString(),
-
-                 );
-
-    }
-                )
-              ),*/
               DropdownButton<String>(
                 value: dropdownValue.toString(),
                 icon: Icon(Icons.arrow_downward),
@@ -202,38 +200,59 @@ class _addDonationState extends State<addDonation> {
             child: FlatButton(
               color: Colors.blue[800],
               onPressed: () async {
-                address = setLocationButton.address;
+                try {
+                  address = setLocationButton.address;
 
-                if (discreption == '' ||
-                    address == null ||
-                    (food == false && cloths == false)) {
+                  if (discreption != '' &&
+                      address != null &&
+                      (food == true || cloths == true)) {
+                    if (address != null) {
+                      try {
+                        var donorPhone = await user_data.getCurrentUserPhone();
+
+                        _firestore.collection('donations').add({
+                          'address':
+                              GeoPoint(address.latitude, address.longitude),
+                          'discreption': discreption,
+                          'donation_status': donationStatus,
+                          'dropdownvalue': dropdownValue,
+                          'email': user_data.getCurrentUserEmail(),
+                          'food_or_cloths': food == true ? 'food' : 'cloths',
+                          'image': imageUrl,
+                          'donation_claimer': donationClaimer,
+                          'claimer_phone': claimerPhone,
+                          'donor_phone': donorPhone,
+                          'timestamp': FieldValue.serverTimestamp(),
+                          //to save time of messge so we can display it in order
+                        });
+
+                        user_data.updateScore();
+
+                        Navigator.pop(context);
+                      } catch (e) {
+                        print('bbb');
+                        print(e);
+                      }
+                    } else {
+                      print('address is null');
+                    }
+                  } else {
+                    showOkAlertDialog(
+                      context: context,
+                      title: 'error',
+                      message: 'some data is missing',
+                    );
+                  }
+                } catch (e) {
                   showOkAlertDialog(
                     context: context,
                     title: 'error',
                     message: 'some data is missing',
                   );
-                } else {
-                  try {
-                    _firestore.collection('donations').add({
-                      'address': GeoPoint(address.latitude, address.longitude),
-                      'discreption': discreption,
-                      'donation_status': donationStatus,
-                      'dropdownvalue': dropdownValue,
-                      'email': user_data.getCurrentUserEmail(),
-                      'food_or_cloths': food == true ? 'food' : 'cloths',
-                      'image': imageUrl,
-                      'donation_claimer': donationClaimer,
-                      'timestamp': FieldValue
-                          .serverTimestamp(), //to save time of messge so we can display it in order
-                    });
-
-                    Navigator.pop(context);
-                  } catch (e) {
-                    print(e);
-                  }
                 }
               },
-              child: Text('Add Donation',style: TextStyle(color: Colors.white)),
+              child:
+                  Text('Add Donation', style: TextStyle(color: Colors.white)),
             ),
           ),
         ),

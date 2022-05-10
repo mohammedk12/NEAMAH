@@ -22,6 +22,7 @@ class _Regestration_screenState extends State<Regestration_screen> {
   bool? PersonInNeed = false;
   String name = '';
   String dropdownValue = 'choose';
+  String phone = '';
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,102 +36,97 @@ class _Regestration_screenState extends State<Regestration_screen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              Text('Create Account',style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),
-              ),
+                Text(
+                  'Create Account',
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                ),
 
-         // Image(image: AssetImage('images/donation.png'),width: 150.0, height: 150.0,),
-        SizedBox(
-              height: 15
-        ),
+                // Image(image: AssetImage('images/donation.png'),width: 150.0, height: 150.0,),
+                SizedBox(height: 15),
                 TextField(
                   onChanged: (val) {
                     id = val;
                   },
                   decoration: InputDecoration(
-
                     hintText: 'ID',
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide (color: Color(0xFFD1D0D4)),
+                      borderSide: BorderSide(color: Color(0xFFD1D0D4)),
                     ),
                     hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
                   ),
                 ),
-                SizedBox(
-                    height: 7
-                ),
+                SizedBox(height: 7),
                 TextField(
                   onChanged: (val) {
                     name = val;
                   },
                   decoration: InputDecoration(
-                      hintText: 'Name',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide (color: Color(0xFFD1D0D4)),
+                    hintText: 'Name',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD1D0D4)),
+                    ),
+                    hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
                   ),
-                  hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
                 ),
-                ),
-                SizedBox(
-                    height: 7
-                ),
+                SizedBox(height: 7),
                 TextField(
                   onChanged: (val) {
                     email = val;
                   },
                   decoration: InputDecoration(
-                      hintText: 'Email',
-                      enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide (color: Color(0xFFD1D0D4)),
-        ),
-        hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
+                    hintText: 'Email',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD1D0D4)),
+                    ),
+                    hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
+                  ),
                 ),
-    ),
-                SizedBox(
-                    height: 7
-                ),
+                SizedBox(height: 7),
                 TextField(
                   onChanged: (val) {
                     password = val;
                   },
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
-                  decoration:
-                      InputDecoration(
-                          hintText: 'Password (more than 6 charecters)',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide (color: Color(0xFFD1D0D4)),
+                  decoration: InputDecoration(
+                    hintText: 'Password (more than 6 charecters)',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD1D0D4)),
+                    ),
+                    hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
                   ),
-                  hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
-                      ),
                 ),
-                SizedBox(
-                    height: 7
-                ),
+                SizedBox(height: 7),
                 TextField(
                   onChanged: (val) {
                     retypedPassword = val;
                   },
                   obscureText: true,
                   decoration: InputDecoration(
-                      hintText: 'Confirm Password',
+                    hintText: 'Confirm Password',
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide (color: Color(0xFFD1D0D4)),
+                      borderSide: BorderSide(color: Color(0xFFD1D0D4)),
                     ),
                     hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
                   ),
                 ),
-                SizedBox(
-                    height: 7
+                TextField(
+                  onChanged: (val) {
+                    phone = val;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Phone number',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD1D0D4)),
+                    ),
+                    hintStyle: TextStyle(color: Color(0xFFD1D0D4)),
+                  ),
                 ),
+                SizedBox(height: 7),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   // TODO DropdownButton<String>(
-                    //  value: dropdownValue.toString(),
-                   //   icon: Icon(Icons.arrow_downward),
-                   //   items: <String>['choose','donor','needy']
-                   //   ),
                     Text('Donor'),
                     Checkbox(
                         value: Donner,
@@ -152,15 +148,15 @@ class _Regestration_screenState extends State<Regestration_screen> {
                   ],
                 ),
                 SizedBox(
-                    height: 7,
+                  height: 7,
                 ),
                 Container(
                   width: size.width * 0.6,
                   child: ClipRRect(
-
                     borderRadius: BorderRadius.circular(8),
                     child: FlatButton(
-                      padding: EdgeInsets.symmetric(vertical: 15,horizontal: 30),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                       color: Color(0xFF007AFF),
                       onPressed: () async {
                         if (email == '' ||
@@ -181,8 +177,9 @@ class _Regestration_screenState extends State<Regestration_screen> {
                           );
                         } else {
                           try {
-                            final newUser = await _auth.createUserWithEmailAndPassword(
-                                email: email, password: password);
+                            final newUser =
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: email, password: password);
 
                             _firestore
                                 .collection('users')
@@ -193,6 +190,8 @@ class _Regestration_screenState extends State<Regestration_screen> {
                               'name': name,
                               'claimed_don': '',
                               'email': email,
+                              'score': 0,
+                              'phone': phone,
                             });
 
                             if (newUser != null) {
@@ -208,13 +207,11 @@ class _Regestration_screenState extends State<Regestration_screen> {
                           }
                         }
                       },
-                      child: Text(
-                          'SIGN UP',
+                      child: Text('SIGN UP',
                           style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
-
               ],
             ),
           ),

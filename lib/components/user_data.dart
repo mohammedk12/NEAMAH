@@ -62,6 +62,55 @@ class user_data {
     return id;
   }
 
+  static Future<int> getCurrentUserScore() async {
+    late int score;
+    try {
+      final user = _auth.currentUser;
+      print(user!.email);
+      // user will be null if the user is not logged in
+
+      if (user != null) {
+        activeUser = user;
+        var data = await _firestore
+            .collection('users')
+            .doc('${activeUser!.uid}')
+            .get();
+        score = data.data()!['score'];
+      } else {
+        print('nulllllllllll');
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return score;
+  }
+
+  static Future<String> getCurrentUserPhone() async {
+    late String phone;
+    try {
+      final user = _auth.currentUser;
+      print(user!.email);
+      // user will be null if the user is not logged in
+
+      if (user != null) {
+        activeUser = user;
+        var data = await _firestore
+            .collection('users')
+            .doc('${activeUser!.uid}')
+            .get();
+
+        phone = data.data()!['phone'];
+      } else {
+        print('nulllllllllll');
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return phone;
+  }
+
   static Future<int> getCurrentUserType() async {
     late int type;
     try {
@@ -117,6 +166,26 @@ class user_data {
         activeUser = user;
         await _firestore.collection('users').doc('${user.uid}').update({
           'claimed_don': claimed_id,
+        });
+      } else {
+        print('nulllllllllll');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<void> updateScore() async {
+    try {
+      final user = _auth.currentUser;
+
+      int score = await getCurrentUserScore();
+      int new_score = score + 50;
+
+      if (user != null) {
+        activeUser = user;
+        await _firestore.collection('users').doc('${user.uid}').update({
+          'score': new_score,
         });
       } else {
         print('nulllllllllll');

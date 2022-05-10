@@ -1,5 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:neamah/screens/innetial_screen.dart';
+import 'package:neamah/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:neamah/components/donation_data.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,11 @@ void main() async {
   // Initialize Firebase
   await Firebase.initializeApp();
 
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(
+      darkTheme: ThemeData(
+          cupertinoOverrideTheme:
+              CupertinoThemeData(textTheme: CupertinoTextThemeData())),
+      home: MyApp()));
 }
 
 // provider > myApp > MaterialApp > innetial_screen
@@ -25,12 +30,8 @@ class MyApp extends StatelessWidget {
       create: (_) =>
           donation_data(), // returns the object that need to be provided to all of the children in the tree (which is TaskData)
       child: MaterialApp(
-        home: innetial_screen(),
+        home: log_in_screen(),
       ),
-    );
-    // return innetial_screen();
-    return MaterialApp(
-      home: innetial_screen(),
     );
   }
 }

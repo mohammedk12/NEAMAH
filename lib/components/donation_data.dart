@@ -30,11 +30,32 @@ class donation_data extends ChangeNotifier {
   late String imageFile;
   late var time;
   late String donationClaimer;
+  late String claimerPhone;
 
-  void add_Donation(_imageFile, address, foodOrCloths, donationStatus,
-      dropdownValue, discreption, id, email, time, donationClaimer) async {
-    donations.add(Donation(_imageFile, address, foodOrCloths, donationStatus,
-        dropdownValue, discreption, id, email, time, donationClaimer));
+  void add_Donation(
+      _imageFile,
+      address,
+      foodOrCloths,
+      donationStatus,
+      dropdownValue,
+      discreption,
+      id,
+      email,
+      time,
+      donationClaimer,
+      claimerPhone) async {
+    donations.add(Donation(
+        _imageFile,
+        address,
+        foodOrCloths,
+        donationStatus,
+        dropdownValue,
+        discreption,
+        id,
+        email,
+        time,
+        donationClaimer,
+        claimerPhone));
     await Future.delayed(Duration.zero, () async {
       notifyListeners();
     });
@@ -70,6 +91,19 @@ class donation_data extends ChangeNotifier {
 
     donations[donations.indexWhere((don) => don.id == d.id)].donationClaimer =
         claimer;
+    Future.delayed(Duration.zero, () async {
+      notifyListeners();
+    });
+  }
+
+  void setDonationClaimerPhone(Donation d, String phone) {
+    _firestore
+        .collection('donations')
+        .doc('${d.id}')
+        .update({'claimer_phone': phone});
+
+    donations[donations.indexWhere((don) => don.id == d.id)].claimerPhone =
+        phone;
     Future.delayed(Duration.zero, () async {
       notifyListeners();
     });

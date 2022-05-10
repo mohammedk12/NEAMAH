@@ -11,6 +11,7 @@ class Donation {
   late String imageFile;
   late var time;
   late String donationClaimer;
+  late String claimerPhone;
 
   Donation(
       this.imageFile,
@@ -22,5 +23,6 @@ class Donation {
       this.id,
       this.email,
       this.time,
-      this.donationClaimer);
+      this.donationClaimer,
+      this.claimerPhone);
 }

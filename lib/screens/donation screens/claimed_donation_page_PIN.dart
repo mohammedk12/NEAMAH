@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neamah/components/user_data.dart';
-import 'package:neamah/screens/innetial_screen.dart';
+import 'package:neamah/screens/editProfile.dart';
+import 'package:neamah/screens/PIN_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class claimed_donation_page extends StatelessWidget {
@@ -15,73 +16,88 @@ class claimed_donation_page extends StatelessWidget {
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Center(child: Text('...')),
+          backgroundColor: Color(0xFF004086),
+          centerTitle: true,
+          title: Text('NA\'MAH'),
         ),
-        body: Material(
-          child: Container(
-            color: Colors.white,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.done),
-                  Text('you have claimed the donation !'),
-                  ElevatedButton(
-                      onPressed: () async {
-                        final url =
-                            'https://www.google.com/maps/search/?api=1&query=${Donation.donations[index].address.latitude},${Donation.donations[index].address.longitude}';
-                        if (await canLaunch(url)) {
-                          await launch(url);
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
-                      child: Text('go to the location')),
-                  SizedBox(
-                    height: 100,
+        body: Container(
+          child: Column(children: [
+            SizedBox(height: 180),
+            Text('You have claimed the donation!',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
+            SizedBox(height: 30),
+            Container(
+              width: 170,
+              height: 45,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: FlatButton(
+                  color: Colors.blue[800],
+                  onPressed: () async {
+                    final url =
+                        'https://www.google.com/maps/search/?api=1&query=';
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: Text(
+                    'Get Directions',
+                    style: TextStyle(color: Colors.white),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
-                        onPressed: () {
-                          Donation.updateStatus(
-                              Donation.donations[index], 'Completed');
-                          user_data.setCurrentUserClaimedDON_id('');
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return innetial_screen();
-                            }),
-                          );
-                        },
-                        child: Text('confirm claiming'),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.red),
-                        onPressed: () {
-                          Donation.updateStatus(
-                              Donation.donations[index], 'Cancelled');
-                          user_data.setCurrentUserClaimedDON_id('');
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return innetial_screen();
-                            }),
-                          );
-                        },
-                        child: Text('cancel claiming'),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
+            SizedBox(height: 70),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                width: 170,
+                height: 45,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: FlatButton(
+                    color: Colors.blue[800],
+                    onPressed: () {
+                      Donation.updateStatus(
+                          Donation.donations[index], 'Completed');
+                      user_data.setCurrentUserClaimedDON_id('');
+
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    },
+                    child: Text(
+                      'Confirm Claiming',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 15),
+              Container(
+                width: 170,
+                height: 45,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: FlatButton(
+                    color: Colors.blue[800],
+                    onPressed: () {
+                      Donation.updateStatus(
+                          Donation.donations[index], 'Cancelled');
+                      user_data.setCurrentUserClaimedDON_id('');
+
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    },
+                    child: Text(
+                      'Cancel Claiming',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+          ]),
         ),
       ),
     );
