@@ -185,7 +185,7 @@ class _Regestration_screenState extends State<Regestration_screen> {
                                 .collection('users')
                                 .doc('${newUser.user!.uid}')
                                 .set({
-                              'DonnerOrPIN': Donner == true ? 1 : 2,
+                              'user_type': Donner == true ? 1 : 2,
                               'id': id,
                               'name': name,
                               'claimed_don': '',

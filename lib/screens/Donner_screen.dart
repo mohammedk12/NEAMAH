@@ -139,9 +139,9 @@ class myDonations extends StatelessWidget {
               if (donation.get('email') == user_data.getCurrentUserEmail()) {
                 final _imageFile = donation.get('image');
                 final address = donation.get('address');
-                final foodOrCloths = donation.get('food_or_cloths');
+                final foodOrCloths = donation.get('donation_type');
                 final donationStatus = donation.get('donation_status');
-                final dropdownValue = donation.get('dropdownvalue');
+                final dropdownValue = donation.get('QuantityPerPerson');
                 final discreption = donation.get('discreption');
                 final email = donation.get('email');
                 final time1 = donation.get('timestamp');
@@ -232,7 +232,6 @@ class myDonations extends StatelessWidget {
                           Text(
                             donationStatus, //style: TextStyle(color: Colors.white),
                           ),
-
                         ],
                       ),
                     ),

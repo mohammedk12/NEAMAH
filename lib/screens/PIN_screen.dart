@@ -29,7 +29,7 @@ class PIN_screen extends StatefulWidget {
 
 class _PIN_screenState extends State<PIN_screen> {
   int NavigationBarIndex = 0;
-  int allowableDistance = 10; // in km
+  int allowableDistance = 5; // in km
 
   // IF YOU NEED TO USE CONTEXT DO IT DOWN IN onTap
   // if something in the body type it here, else you can type it down
@@ -60,9 +60,9 @@ class _PIN_screenState extends State<PIN_screen> {
           print(calcDis(donation.data()['address']));
           var _imageFile = donation.data()['image'];
           var address = donation.data()['address'];
-          var foodOrCloths = donation.data()['food_or_cloths'];
+          var foodOrCloths = donation.data()['donation_type'];
           var donationStatus = donation.data()['donation_status'];
-          var dropdownValue = donation.data()['dropdownvalue'];
+          var dropdownValue = donation.data()['QuantityPerPerson'];
           var discreption = donation.data()['discreption'];
           var email = donation.data()['email'];
           var time = donation.data()['timestamp'].toDate();
@@ -98,9 +98,9 @@ class _PIN_screenState extends State<PIN_screen> {
 
       var _imageFile = donations.data()!['image'];
       var address = donations.data()!['address'];
-      var foodOrCloths = donations.data()!['food_or_cloths'];
+      var foodOrCloths = donations.data()!['donation_type'];
       var donationStatus = donations.data()!['donation_status'];
-      var dropdownValue = donations.data()!['dropdownvalue'];
+      var dropdownValue = donations.data()!['QuantityPerPerson'];
       var discreption = donations.data()!['discreption'];
       var email = donations.data()!['email'];
       var time = donations.data()!['timestamp'].toDate();

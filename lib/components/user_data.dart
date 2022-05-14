@@ -123,7 +123,7 @@ class user_data {
             .collection('users')
             .doc('${activeUser!.uid}')
             .get();
-        type = data.data()!['DonnerOrPIN'];
+        type = data.data()!['user_type'];
       } else {
         print('nulllllllllll');
       }
