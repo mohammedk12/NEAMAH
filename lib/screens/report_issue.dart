@@ -41,7 +41,7 @@ class report_issue extends StatelessWidget {
                   child: FlatButton(
                       padding: EdgeInsets.symmetric(
                           vertical: 15, horizontal: 75), //55
-                      color: Color(0xFF007AFF),
+                      color: Color(0xFF0E468B),
                       onPressed: () {
                         if (issue.isEmpty) {
                           showOkAlertDialog(
@@ -64,7 +64,7 @@ class report_issue extends StatelessWidget {
                         }
                       },
                       child: Text(
-                        'submit',
+                        'Submit',
                         style: TextStyle(color: Colors.white),
                       )))
             ],

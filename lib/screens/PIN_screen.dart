@@ -183,14 +183,14 @@ class _PIN_screenState extends State<PIN_screen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.view_list, color: Colors.white),
               title: Text(
-                'view donations',
+                'View Donations',
                 style: TextStyle(color: Colors.white),
               )),
           BottomNavigationBarItem(
               icon: Icon(Icons.person, color: Colors.white),
               backgroundColor: Colors.blue,
               title: Text(
-                'edit profile',
+                'Edit Profile',
                 style: TextStyle(color: Colors.white),
               )),
         ],

@@ -27,10 +27,8 @@ class _addDonationState extends State<addDonation> {
   PickedFile? _imageFile;
   int dropdownValue = 1;
   late LatLng address;
-
   String imageUrl =
       'https://firebasestorage.googleapis.com/v0/b/neamah-7e68e.appspot.com/o/images%2Fdownload.png?alt=media&token=c9fb9bfb-0ba0-45d2-bf57-f2bd69882901';
-
   ImagePicker _picker = ImagePicker();
 
   Widget myImage() {
@@ -51,8 +49,6 @@ class _addDonationState extends State<addDonation> {
                   offset: Offset(0, 3))
             ],
             borderRadius: BorderRadius.all(Radius.circular(10)),
-
-            //TODO:
             image: DecorationImage(
               image: _imageFile == null
                   ? NetworkImage(imageUrl) as ImageProvider

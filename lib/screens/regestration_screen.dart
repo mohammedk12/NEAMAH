@@ -74,7 +74,7 @@ class _Regestration_screenState extends State<Regestration_screen> {
                     email = val;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    hintText: 'Email (ex: example@gmail.com)',
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFD1D0D4)),
                     ),

@@ -48,7 +48,6 @@ class _changePasswordState extends State<changePassword> {
                 'Change Password',
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
-
               SizedBox(height: 50),
               TextField(
                 controller: messageTextController1,
@@ -82,14 +81,12 @@ class _changePasswordState extends State<changePassword> {
                     ),
                     hintStyle: TextStyle(color: Color(0xFFD1D0D4))),
               ),
-
               SizedBox(height: 60),
-
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: FlatButton(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                  color: Color(0xFF007AFF),
+                  color: Color(0xFF0E468B),
                   onPressed: () {
                     messageTextController1.clear();
                     messageTextController2.clear();
