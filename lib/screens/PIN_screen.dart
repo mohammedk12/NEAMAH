@@ -57,6 +57,8 @@ class _PIN_screenState extends State<PIN_screen> {
 
       for (var donation in donations.docs.reversed) {
         if (calcDis(donation.data()['address']) < allowableDistance) {
+          if (donation.data()['donation_status'] == 'Claimed' ||
+              donation.data()['donation_status'] == 'Not Claimed') {
           print(calcDis(donation.data()['address']));
           var _imageFile = donation.data()['image'];
           var address = donation.data()['address'];
@@ -84,7 +86,7 @@ class _PIN_screenState extends State<PIN_screen> {
                   time,
                   donationClaimer,
                   claimerPhone);
-        }
+        }}
       }
     } else {
       final donations = await _firestore
@@ -277,11 +279,11 @@ class viewDonations extends StatelessWidget {
                       height: 140,
                       width: 130,
                     ),
-                    SizedBox(height: 3),
-                    Text(calcDistence() + 'KM'),
-                    SizedBox(height: 3),
+                   // SizedBox(height: 3),
+                    //Text(calcDistence() + 'KM'),
+                    SizedBox(height: 10),
                     Text(DD_provider.donations[index].donationStatus),
-                    SizedBox(height: 3.5),
+                    //SizedBox(height: 3.5),
                   ],
                 ),
               ),

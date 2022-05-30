@@ -35,10 +35,10 @@ class _addDonationState extends State<addDonation> {
     return Column(children: [
       InkWell(
         child: Container(
-          // height: 150.0,
-          // width: 150,
-          height: 100.0,
-          width: 100,
+           height: 150.0,
+           width: 150,
+          //height: 100.0,
+          //width: 100,
           decoration: BoxDecoration(
             color: Colors.grey[100],
             boxShadow: [
@@ -61,13 +61,13 @@ class _addDonationState extends State<addDonation> {
           takePhoto(ImageSource.camera);
         },
       ),
-      FlatButton.icon(
-        icon: Icon(Icons.image),
-        onPressed: () {
-          takePhoto(ImageSource.gallery);
-        },
-        label: Text("Gallery"),
-      ),
+      // FlatButton.icon(
+      //   icon: Icon(Icons.image),
+      //   onPressed: () {
+      //     takePhoto(ImageSource.gallery);
+      //   },
+      //   label: Text("Gallery"),
+      // ),
     ]);
   }
 
@@ -198,14 +198,12 @@ class _addDonationState extends State<addDonation> {
               onPressed: () async {
                 try {
                   address = setLocationButton.address;
-
                   if (discreption != '' &&
                       address != null &&
                       (food == true || cloths == true)) {
                     if (address != null) {
                       try {
                         var donorPhone = await user_data.getCurrentUserPhone();
-
                         _firestore.collection('donations').add({
                           'address':
                               GeoPoint(address.latitude, address.longitude),
@@ -221,9 +219,7 @@ class _addDonationState extends State<addDonation> {
                           'timestamp': FieldValue.serverTimestamp(),
                           //to save time of messge so we can display it in order
                         });
-
                         user_data.updateScore();
-
                         Navigator.pop(context);
                       } catch (e) {
                         print('bbb');

@@ -35,7 +35,7 @@ class claimed_donation_page extends StatelessWidget {
                   color: Colors.blue[800],
                   onPressed: () async {
                     final url =
-                        'https://www.google.com/maps/search/?api=1&query=';
+                        'https://www.google.com/maps/search/?api=1&query=${Donation.donations[index].address.latitude},${Donation.donations[index].address.longitude}';
                     if (await canLaunch(url)) {
                       await launch(url);
                     } else {
